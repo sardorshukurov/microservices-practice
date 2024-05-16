@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Play.Catalog", "Play.Catalog", "{C377D611-1FAA-4752-AB1C-AB53BE770557}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F6771414-BA3D-419B-980B-33E47B3FA5EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Play.Catalog.Service", "Play.Catalog\src\Play.Catalog.Service\Play.Catalog.Service.csproj", "{D7834397-7B07-4B4F-AC25-AA15A542A9B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F6771414-BA3D-419B-980B-33E47B3FA5EA} = {C377D611-1FAA-4752-AB1C-AB53BE770557}
+		{D7834397-7B07-4B4F-AC25-AA15A542A9B3} = {F6771414-BA3D-419B-980B-33E47B3FA5EA}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7834397-7B07-4B4F-AC25-AA15A542A9B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7834397-7B07-4B4F-AC25-AA15A542A9B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7834397-7B07-4B4F-AC25-AA15A542A9B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7834397-7B07-4B4F-AC25-AA15A542A9B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
