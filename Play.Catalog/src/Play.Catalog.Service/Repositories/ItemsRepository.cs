@@ -21,7 +21,7 @@ public class ItemsRepository
         return await _dbCollection.Find(_filterBuilder.Empty).ToListAsync();
     }
 
-    public async Task<Item> GetAsync(Guid id)
+    public async Task<Item?> GetAsync(Guid id)
     {
         FilterDefinition<Item> filter = _filterBuilder.Eq(entity => entity.Id, id);
         return await _dbCollection.Find(filter).FirstOrDefaultAsync();
