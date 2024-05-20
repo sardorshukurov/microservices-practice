@@ -29,6 +29,10 @@ builder.Services
         retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) 
                         + TimeSpan.FromMilliseconds(jitterer.Next(0, 1000))
     ))
+    .AddTransientHttpErrorPolicy(b => b.Or<TimeoutRejectedException>().CircuitBreakerAsync(
+        3,
+        TimeSpan.FromSeconds(15)
+    ))
     .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(1));
 
 var app = builder.Build();
