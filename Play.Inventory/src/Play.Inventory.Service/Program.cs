@@ -6,7 +6,7 @@ using Polly;
 using Polly.Timeout;
 
 var builder = WebApplication.CreateBuilder(args);
-const string allowedOriginSettings = "AllowedOrigin";
+const string allowedOriginSettings = "AllowedOrigins";
 
 // Add services to the container.
 

@@ -1,7 +1,54 @@
 ﻿@page "/"
+@using Play.Frontend.Components.Models
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Catalog items</PageTitle>
 
-<h1>Hello, world!</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in _items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price.ToString("C")</td>
+                <td>@item.CreatedDate.ToString("g")</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" @onclick="() => EditItem(item.Id)">Edit</button>
+                    <button class="btn btn-danger btn-sm" @onclick="() => DeleteItem(item.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-Welcome to your new app.
+@code {
+
+    private readonly HttpClient _httpClient = new HttpClient();
+    private IEnumerable<CatalogItems> _items = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await _httpClient.GetAsync(Settings.CatalogApi + "/items");
+        _items = await response.Content.ReadFromJsonAsync<IEnumerable<CatalogItems>>() ?? [];
+    }
+
+    private void EditItem(Guid id)
+    {
+        
+    }
+    
+    private async void DeleteItem(Guid id)
+    {
+        var response = await _httpClient.DeleteAsync(Settings.CatalogApi + $"/items/{id}");
+        StateHasChanged();
+    }
+}

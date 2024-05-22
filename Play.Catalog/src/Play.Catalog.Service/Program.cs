@@ -3,7 +3,7 @@ using Play.Common.MassTransit;
 using Play.Common.MongoDB;
 
 var builder = WebApplication.CreateBuilder(args);
-const string allowedOriginSettings = "AllowedOrigin";
+const string allowedOriginSettings = "AllowedOrigins";
 
 builder.Services
     .AddMongo()
