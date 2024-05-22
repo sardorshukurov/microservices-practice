@@ -6,6 +6,7 @@ using Polly;
 using Polly.Timeout;
 
 var builder = WebApplication.CreateBuilder(args);
+const string allowedOriginSettings = "AllowedOrigin";
 
 // Add services to the container.
 
@@ -29,6 +30,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    app.UseCors(b =>
+    {
+        b.WithOrigins(app.Configuration[allowedOriginSettings]!)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 }
 
 app.UseHttpsRedirection();

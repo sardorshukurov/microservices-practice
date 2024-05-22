@@ -3,6 +3,7 @@ using Play.Common.MassTransit;
 using Play.Common.MongoDB;
 
 var builder = WebApplication.CreateBuilder(args);
+const string allowedOriginSettings = "AllowedOrigin";
 
 builder.Services
     .AddMongo()
@@ -23,6 +24,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.UseCors(b =>
+    {
+        b.WithOrigins(app.Configuration[allowedOriginSettings]!)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 }
 
 app.UseHttpsRedirection();
