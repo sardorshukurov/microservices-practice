@@ -1,3 +1,4 @@
+using Play.Common.MassTransit;
 using Play.Common.MongoDB;
 using Play.Inventory.Service.Clients;
 using Play.Inventory.Service.Entities;
@@ -15,25 +16,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddMongo()
-    .AddMongoRepository<InventoryItem>("inventoryitems");
+    .AddMongoRepository<InventoryItem>("inventoryitems")
+    .AddMongoRepository<CatalogItem>("catalogitems")
+    .AddMassTransitWithRabbitMq();
 
-Random jitterer = new Random();
-
-builder.Services
-    .AddHttpClient<CatalogClient>(client =>
-    {
-        client.BaseAddress = new Uri("https://localhost:7054");
-    })
-    .AddTransientHttpErrorPolicy(b => b.Or<TimeoutRejectedException>().WaitAndRetryAsync(
-        5,
-        retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) 
-                        + TimeSpan.FromMilliseconds(jitterer.Next(0, 1000))
-    ))
-    .AddTransientHttpErrorPolicy(b => b.Or<TimeoutRejectedException>().CircuitBreakerAsync(
-        3,
-        TimeSpan.FromSeconds(15)
-    ))
-    .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(1));
+AddCatalogClient(builder.Services);
 
 var app = builder.Build();
 
@@ -51,3 +38,23 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+void AddCatalogClient(IServiceCollection services)
+{
+    Random random = new Random();
+    services
+        .AddHttpClient<CatalogClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://localhost:7054");
+        })
+        .AddTransientHttpErrorPolicy(b => b.Or<TimeoutRejectedException>().WaitAndRetryAsync(
+            5,
+            retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)) 
+                            + TimeSpan.FromMilliseconds(random.Next(0, 1000))
+        ))
+        .AddTransientHttpErrorPolicy(b => b.Or<TimeoutRejectedException>().CircuitBreakerAsync(
+            3,
+            TimeSpan.FromSeconds(15)
+        ))
+        .AddPolicyHandler(Policy.TimeoutAsync<HttpResponseMessage>(1));
+}
